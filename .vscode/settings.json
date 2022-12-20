@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "power_management_lib.h": "c",
+        "mp28167.h": "c",
+        "examples.h": "c",
+        "dev_config.h": "c"
+    }
+}

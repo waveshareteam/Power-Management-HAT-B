@@ -4,8 +4,8 @@
 * | Function    :   
 * | Info        :   examples Demo
 *----------------
-* |	This version:   V1.0
-* | Date        :   2022-10-01
+* |	This version:   V1.1
+* | Date        :   2022-12-20
 * | Info        :   
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,12 +38,20 @@
 #include "MP28167.h"
 
 #define USE_CURRENT_TO_CHECK_PI_STATUS 0
+#if USE_CURRENT_TO_CHECK_PI_STATUS
+#define Shutdown_Current_Ma 320
+#endif
+
 
 
 void Button_Ctr_Init(void);
 void Button_Ctr_Loop(void);
 
+
 void Period_Time_Init(void);
 void Period_Time_Loop(void);
+
+void Cycle_Time_Init(void);
+void Cycle_Time_Loop(void);
 
 #endif

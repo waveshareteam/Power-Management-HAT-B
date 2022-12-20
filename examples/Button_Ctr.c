@@ -4,8 +4,8 @@
 * | Function    :   
 * | Info        :   Button_Ctr Demo
 *----------------
-* |	This version:   V1.0
-* | Date        :   2022-10-01
+* |	This version:   V1.1
+* | Date        :   2022-12-20
 * | Info        :   
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,11 +29,32 @@
 ******************************************************************************/
 #include "examples.h"
 
-#if USE_CURRENT_TO_CHECK_PI_STATUS
-#define Shutdown_Current_Ma 320
-#endif
+struct repeating_timer timer;
 Power_All_State Read_State;
-static struct repeating_timer timer;
+
+static bool Timer_Callback(struct repeating_timer *t);
+/******************************************************************************
+    function: Button_Ctr_Init
+    brief : Initialize the Button function
+    parameter:
+******************************************************************************/
+void Button_Ctr_Init(void)
+{
+    
+    Power_init();
+    MP28167_Default_Config();
+    add_repeating_timer_ms(1500, Timer_Callback, NULL, &timer);
+}
+/******************************************************************************
+    function: Button_Ctr_Loop
+    brief : loop function that handles button events,need a loop call
+    parameter:
+******************************************************************************/
+void Button_Ctr_Loop(void)
+{
+    static bool power_state, running_state;
+    power_state = Power_Ctrl_By_Button();
+}
 /******************************************************************************
     function: Timer_Callback
     brief : The Timer Callback and Output Power State
@@ -44,7 +65,7 @@ static bool Timer_Callback(struct repeating_timer *t)
 {
     Read_State = Power_State_Get_All();
     //Now power supply State
-    printf("Power_State (): %d \r\n", Read_State.Power_State);
+    printf("Power_State : %d \r\n", Read_State.Power_State);
     //Now Raspberry Pi Run State (Based on GPIO,need to run Python script)
     printf("Running_State : %d \r\n", Read_State.Running_State);
     //Now the power input voltage, It could be USB voltage or Li-battery voltage
@@ -68,26 +89,4 @@ static bool Timer_Callback(struct repeating_timer *t)
     }
 #endif
     printf("\r\n\r\n\r\n");
-}
-/******************************************************************************
-    function: Button_Ctr_Init
-    brief : Initialize the Button function
-    parameter:
-******************************************************************************/
-void Button_Ctr_Init(void)
-{
-    
-    Power_init();
-    MP28167_Default_Config();
-    add_repeating_timer_ms(1500, Timer_Callback, NULL, &timer);
-}
-/******************************************************************************
-    function: Button_Ctr_Loop
-    brief : loop function that handles button events,need a loop call
-    parameter:
-******************************************************************************/
-void Button_Ctr_Loop(void)
-{
-    static bool power_state, running_state;
-    power_state = Power_Ctrl_By_Button();
 }

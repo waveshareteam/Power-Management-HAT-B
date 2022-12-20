@@ -3,8 +3,8 @@
   | Author      :   Waveshare team 
   | Info        :   Hardware underlying interface
   ----------------
-  | This version:   V1.0
-  | Date        :   2022-10-01
+  | This version:   V1.1
+  | Date        :   2022-12-20
   | Info        :
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,6 +34,10 @@
 #include "PCF85063A.h"
 #include "pico/multicore.h"
 
+#define Power_off() Power_State_Crtl(false)
+#define Power_on()  Power_State_Crtl(true)
+#define one_day_sec ((24*3600))
+
 typedef struct {
     bool Power_State;
     bool Running_State;
@@ -60,6 +64,7 @@ bool Power_RTC_Set_Alarm(datetime_t *Alarm_Time);
 bool Power_init(void);
 bool Power_RTC_init(datetime_t *RTC_Init_Time);
 bool Power_on_by_Period_Time_Init(datetime_t *Now_Time,datetime_t *Power_On_Time,datetime_t *Power_Off_Time);
+bool Power_on_by_Cycle_Init(datetime_t *Now_Time,uint32_t power_on_keep_time,uint32_t power_off_keep_time,bool State);
 bool Power_Ctrl_By_Period_Time(void);
 
 bool Power_Ctrl_By_Button(void);
@@ -68,7 +73,6 @@ bool Power_On_Period_Time(datetime_t *Power_On_Time);
 
 Power_All_State Power_State_Get_All(void);
 
-#define Power_off() Power_State_Crtl(false)
-#define Power_on()  Power_State_Crtl(true)
+
 
 #endif
